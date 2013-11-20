@@ -17,11 +17,27 @@ Configuration
 
 ### Puppet configuration
 
-In your Puppet manifests:
+In your Puppet manifest:
+
+```puppet
+class { 'xhgui': }
+```
+
+You can set the following parameters:
+
+* `phpMongoPackage`: custom php-mongo package name
+* `vhostName`: custom virtual host name (defaults to `xhgui.domain.extension`)
+* `vhostDir`: custom virtual host dir (defaults to `/var/www/xhgui`)
+* `version`: which version of XHGui to install (defaults to `v0.3.0`)
+* `apacheUser`: name of your Apache user (defaults to `apache`)
+* `xhprofPackage`: custom name of XHProf package (defaults to `php-pecl-xhprof`)
+
+For instance:
 
 ```puppet
 class { 'xhgui':
-  phpMongoPackage => 'your-custom-pecl-mongo'
+    vhostName       => 'stats.my_app.dev',
+    phpMongoPackage => 'php53u-pecl-mongo'
 }
 ```
 
@@ -39,4 +55,4 @@ profiled. To profile all requests, set `XHGUI_SAMPLE_SIZE` to 1.
 Usage
 -----
 
-By default, you can access XHGui at http://xhgui.your_domain_name.extension.
+By default, you can access XHGui at http://xhgui.domain.extension.
