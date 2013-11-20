@@ -49,7 +49,9 @@ class xhgui (
   apache::vhost { $vhostName:
     port          => '80',
     docroot       => "${vhostDir}/webroot",
-    require       => Vcsrepo[$vhostDir]
+    require       => Vcsrepo[$vhostDir],
+    directory     => $vhostDir,
+    directory_allow_override => 'All',
   }
 
   exec { 'xhgui permissions':
@@ -66,7 +68,7 @@ class xhgui (
   }
 
   file { "${vhostDir}/external/header-custom.php":
-    content => template('xhprof/xhgui/external/header.php.erb'),
+    content => template('xhgui/header.php.erb'),
     require => Vcsrepo[$vhostDir],
   }
 
