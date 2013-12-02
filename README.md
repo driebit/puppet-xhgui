@@ -31,6 +31,8 @@ You can set the following parameters:
 * `version`: which version of XHGui to install (defaults to `v0.3.0`)
 * `apacheUser`: name of your Apache user (defaults to `apache`)
 * `xhprofPackage`: custom name of XHProf package (defaults to `php-pecl-xhprof`)
+* `sampleSize`: see below (defaults to `100`)
+* `queryTrigger`: a URL query that will trigger profiling for the request (disabled by default)
 
 For instance:
 
@@ -55,4 +57,20 @@ profiled. To profile all requests, set `XHGUI_SAMPLE_SIZE` to 1.
 Usage
 -----
 
+### Web interface
+
 By default, you can access XHGui at http://xhgui.domain.extension.
+
+### Trigger profiling by query string
+
+Enable the query string trigger in your Puppet manifest:
+
+```puppet
+class { 'xhgui':
+    ...
+    queryTrigger => 'profile'
+    ...
+}
+```
+
+And then request the URI with your query string, e.g., http://dev.local/some/url?*profile*.

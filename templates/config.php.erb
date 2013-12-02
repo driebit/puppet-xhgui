@@ -1,0 +1,45 @@
+<?php
+
+return array(
+    'debug' => false,
+    'mode'  => 'development',
+
+    // Can be either mongodb or file.
+    'save.handler' => 'mongodb',
+
+    // Needed for file save handler. Beware of file locking. You can adujst this file path 
+    // to reduce locking problems (eg uniqid, time ...)
+    //'save.handler.filename' => __DIR__.'/../data/xhgui_'.date('Ymd').'.dat',
+    'db.host' => 'mongodb://<%= mongoServer %>',
+    'db.db'   => '<%= mongoDb %>',
+
+    // Allows you to pass additional options like replicaSet to MongoClient.
+    'db.options' => array(),
+    'templates.path' => dirname(__DIR__) . '/src/templates',
+    'date.format' => 'M jS H:i:s',
+    'detail.count' => 6,
+    'page.limit' => 25,
+
+    // Profile 1 in 100 requests.
+    'profiler.enable' => function() {
+        $sampleSize = \getenv('XHGUI_SAMPLE_SIZE') ?: <%= @sampleSize %>;
+        $queryTrigger = "<%= @queryTrigger %>";
+
+        if (null !== $queryTrigger) {
+            if (isset($_GET['profile'])) {
+                return true;
+            }
+
+            if (rand(1, $sampleSize ?: 100) === 1) {
+                return true;
+            }
+
+            return false;
+        }
+    },
+
+    'profiler.simple_url' => function($url) {
+        return preg_replace('/\=\d+/', '', $url);
+    }
+
+);

@@ -10,7 +10,11 @@ class xhgui (
   $version         = 'v0.3.0',
   $apacheUser      = 'apache',
   $xhprofPackage   = 'php-pecl-xhprof',
-  $phpMongoPackage = 'php-pecl-mongo'
+  $phpMongoPackage = 'php-pecl-mongo',
+  $mongoServer     = '127.0.0.1:27017',
+  $mongoDb         = 'xhprof',
+  $sampleSize      = '100',
+  $queryTrigger    = undef
 ) {
   Exec { path => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/', '/usr/local/bin' ] }
 
@@ -67,8 +71,15 @@ class xhgui (
     require     => Vcsrepo[$vhostDir]
   }
 
+  # For backwards compatibility with XHGui <= 0.3.0
   file { "${vhostDir}/external/header-custom.php":
     content => template('xhgui/header.php.erb'),
+    require => Vcsrepo[$vhostDir],
+  }
+
+  # The way to set profiling config for XHGui > 0.3.0
+  file { "${vhostDir}/config/config.php":
+    content => template('xhgui/config.php.erb'),
     require => Vcsrepo[$vhostDir],
   }
 
