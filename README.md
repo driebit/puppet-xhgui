@@ -73,4 +73,4 @@ class { 'xhgui':
 }
 ```
 
-And then request the URI with your query string, e.g., http://dev.local/some/url?*profile*.
+And then request the URI with your query string, e.g., http://dev.local/some/url?profile.
