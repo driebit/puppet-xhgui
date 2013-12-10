@@ -68,7 +68,7 @@ class xhgui (
     command     => "composer install --working-dir ${vhostDir}",
     environment => "COMPOSER_HOME=/home/vagrant/.",
     timeout     => 0,
-    require     => Vcsrepo[$vhostDir]
+    require     => [ Vcsrepo[$vhostDir], Package[$phpMongoPackage], Package[$xhprofPackage] ]
   }
 
   # For backwards compatibility with XHGui <= 0.3.0
