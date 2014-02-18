@@ -54,8 +54,6 @@ class xhgui (
     port          => '80',
     docroot       => "${vhostDir}/webroot",
     require       => Vcsrepo[$vhostDir],
-    directory     => $vhostDir,
-    directory_allow_override => 'All',
   }
 
   exec { 'xhgui permissions':
