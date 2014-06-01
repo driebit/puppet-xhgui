@@ -7,6 +7,7 @@ class xhgui::vhost(
   Exec { path => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/', '/usr/local/bin' ] }
 
   apache::vhost { $name:
+    port    => 80,
     docroot => "${dir}/webroot",
   }
 
