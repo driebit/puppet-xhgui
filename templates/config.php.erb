@@ -10,8 +10,8 @@ return array(
     // Needed for file save handler. Beware of file locking. You can adujst this file path 
     // to reduce locking problems (eg uniqid, time ...)
     //'save.handler.filename' => __DIR__.'/../data/xhgui_'.date('Ymd').'.dat',
-    'db.host' => 'mongodb://<%= @mongoServer %>',
-    'db.db'   => '<%= @mongoDb %>',
+    'db.host' => 'mongodb://<%= @mongo_host %>',
+    'db.db'   => '<%= @mongo_db %>',
 
     // Allows you to pass additional options like replicaSet to MongoClient.
     'db.options' => array(),
@@ -21,8 +21,8 @@ return array(
     'page.limit' => 25,
 
     'profiler.enable' => function() {
-        $sampleSize = \getenv('XHGUI_SAMPLE_SIZE') ?: <%= @sampleSize %>;
-        $queryTrigger = '<%= @queryTrigger %>';
+        $sampleSize = \getenv('XHGUI_SAMPLE_SIZE') ?: <%= @sample_size %>;
+        $queryTrigger = '<%= @query_trigger %>';
 
         // Enable profiling by URL query string parameter
         if ('' != $queryTrigger && isset($_GET[$queryTrigger])) {

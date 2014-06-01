@@ -3,7 +3,7 @@ driebit/puppet-xhgui
 
 Introduction
 -----------
-A Puppet module that installs [XHGui](https://github.com/preinheimer/xhgui),
+A Puppet module that installs [XHGui](https://github.com/perftools/xhgui),
 a MongoDB-backed GUI for [XHProf](https://github.com/facebook/xhprof).
 
 Configuration
@@ -12,8 +12,7 @@ Configuration
 ### Requirements
 
 * [Vcsrepo Puppet module](https://github.com/puppetlabs/puppetlabs-vcsrepo)
-* [Apache Puppet module](https://github.com/example42/puppet-apache)
-* Composer, for instance from the [PHP Puppet module](http://forge.puppetlabs.com/nodes/php).
+* [Composer Puppet module](https://forge.puppetlabs.com/tPl0ch/composer)
 
 ### Puppet configuration
 
@@ -25,21 +24,26 @@ class { 'xhgui': }
 
 You can set the following parameters:
 
-* `phpMongoPackage`: custom php-mongo package name
-* `vhostName`: custom virtual host name (defaults to `xhgui.domain.extension`)
-* `vhostDir`: custom virtual host dir (defaults to `/var/www/xhgui`)
-* `version`: which version of XHGui to install (defaults to `v0.3.0`)
-* `apacheUser`: name of your Apache user (defaults to `apache`)
-* `xhprofPackage`: custom name of XHProf package (defaults to `php-pecl-xhprof`)
-* `sampleSize`: see below (defaults to `100`)
-* `queryTrigger`: a URL query that will trigger profiling for the request (disabled by default)
+* `version`: either a tagged version or a commit hash to install; defaults to
+  `master`
+* `sample_size`: see below (defaults to `100`)
+* `query_trigger`: a URL query string that will enable profiling for the request
+  (disabled by default)
+* `dir`: directory where to install XHGui; defaults to `/var/www/xhgui/{version}`
+* `vhost_name`: used to create an Apache vhost; if you want no vhost, set this
+  to `undef`
+* `mongo_host`: host your MongoDB server can be reached at; defaults to `127.0.0.1:27017`
+* `mongo_db`: MongoDB database name; defaults to `xhprof`
+* `xhprof_package`: custom XHProf package name
+* `php_mongo_package`: custom PHP MongoDB module name
+* `www_user`: custom webserver user
 
 For instance:
 
 ```puppet
 class { 'xhgui':
-    vhostName       => 'stats.my_app.dev',
-    phpMongoPackage => 'php53u-pecl-mongo'
+  vhost_name        => 'stats.my_app.dev',
+  php_mongo_package => 'php53u-pecl-mongo'
 }
 ```
 
@@ -67,9 +71,9 @@ Enable the query string trigger in your Puppet manifest:
 
 ```puppet
 class { 'xhgui':
-    ...
-    queryTrigger => 'profile'
-    ...
+    # ...
+    query_trigger => 'profile'
+    # ...
 }
 ```
 
