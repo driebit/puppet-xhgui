@@ -23,6 +23,7 @@ class xhgui (
     dir     => $dir,
     version => $version,
     user    => $user,
+    require => Package[$xhprof_package],
   }
 
   class { 'xhgui::mongo':
