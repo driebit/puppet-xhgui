@@ -10,6 +10,13 @@ class xhgui::mongo(
    }
   }
 
+  if !defined(Service['mongod']) {
+    service { 'mongod':
+      ensure  => 'running',
+      require => Package['mongodb'],
+    }
+  }
+
   if !defined(Package[$php_mongo_package]) {
     package { $php_mongo_package:
       ensure => present
@@ -18,11 +25,13 @@ class xhgui::mongo(
 
   # Add mongo indexes
   exec { 'mongo indexes':
-    command => 'mongo xhprof --eval "db.results.ensureIndex( { \'meta.SERVER.REQUEST_TIME\' : -1 } );
+    command   => 'mongo xhprof --eval "db.results.ensureIndex( { \'meta.SERVER.REQUEST_TIME\' : -1 } );
       db.results.ensureIndex( { \'profile.main().wt\' : -1 } );
       db.results.ensureIndex( { \'profile.main().mu\' : -1 } );
       db.results.ensureIndex( { \'profile.main().cpu\' : -1 } );
       db.results.ensureIndex( { \'meta.url\' : 1 } )"',
-    require => [ Service['mongod'], Package['mongodb'] ],
+    require   => Service['mongod'],
+    tries     => 10,  # Retry the Mongo command, as MongoDB takes a few seconds
+    try_sleep => 2,   # to start (at least the first time)
   }
 }
